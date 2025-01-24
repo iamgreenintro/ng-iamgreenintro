@@ -1,9 +1,5 @@
 <router-outlet />
 
-<gi-toaster
-  (close)="onCloseClick()"
-  toasterType="danger"
-  [toasterItems]="items"
-></gi-toaster>
+<gi-toaster [toasterItems]="toasters"></gi-toaster>
 
 <button (click)="onAddClick()">ADD</button>

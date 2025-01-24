@@ -11,35 +11,21 @@ import { GiToasterService } from 'gi-libby';
 })
 export class AppComponent implements OnInit {
   title = 'demo';
-  items: any[] = [];
+  toasters: any[] = [];
 
   constructor(private toasterService: GiToasterService) {}
 
   ngOnInit(): void {
-    console.log(this.items);
-    for (let index = 0; index < 3; index++) {
-      this.toasterService.addToaster({
-        title: 'Toaster Title ' + index,
-        type: 'success',
-        autoClose: false,
-      });
-    }
-
     this.toasterService.$toasters.subscribe((result) => {
-      console.log('added');
-      this.items = result;
+      this.toasters = result;
     });
-  }
-
-  onCloseClick(): void {
-    console.log('closed');
   }
 
   onAddClick(): void {
     this.toasterService.addToaster({
-      title: 'Toaster Title ' + 999,
+      title: 'Toaster Title ' + Math.random().toFixed(5),
       type: 'success',
-      autoClose: false,
+      autoClose: true,
     });
   }
 }

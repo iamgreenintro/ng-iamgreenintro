@@ -16,7 +16,6 @@ type ToasterItem = {
 export class GiToasterComponent implements OnInit {
   // Input properties (and if applicable their values):
   @Input() toasterType: 'danger' | 'warning' | 'info' | 'success' = 'info';
-  @Input() maxToasterCount: number = 20;
   @Input() toasterItems!: ToasterItem[];
 
   // Output EventEmitters:
