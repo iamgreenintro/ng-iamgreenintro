@@ -4,3 +4,5 @@
 
 export * from './lib/gi-libby.component';
 export * from './lib/gi-draggable/gi-draggable.directive';
+export * from './lib/gi-toaster/gi-toaster.component';
+export * from './lib/gi-toaster/gi-toaster.service';
