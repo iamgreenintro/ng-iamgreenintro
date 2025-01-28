@@ -6,12 +6,11 @@ import { ToasterItem } from './types';
   selector: 'gi-toaster',
   imports: [CommonModule],
   templateUrl: './gi-toaster.component.html',
-  styleUrl: './gi-toaster.component.css',
+  styleUrl: './gi-toaster.component.scss',
 })
 export class GiToasterComponent implements OnInit {
-  // Input properties (and if applicable their values):
-  @Input() toasterType: 'danger' | 'warning' | 'info' | 'success' = 'info';
-  @Input() toasterItems!: ToasterItem[];
+  // Input properties (and if applicable their (initial) default values):
+  @Input() toasterItems: ToasterItem[] = [];
 
   // Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();

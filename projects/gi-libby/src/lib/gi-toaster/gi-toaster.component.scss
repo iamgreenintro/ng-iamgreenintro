@@ -1,0 +1,32 @@
+:host {
+  position: absolute;
+  right: 0;
+  width: 300px;
+  z-index: 1000;
+}
+
+.toaster-container {
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+
+  &.danger {
+    background-color: red;
+  }
+
+  &.error {
+    background-color: red;
+  }
+
+  &.warn {
+    background-color: orange;
+  }
+
+  &.success {
+    background-color: green;
+  }
+
+  &.info {
+    background-color: blue;
+  }
+}
