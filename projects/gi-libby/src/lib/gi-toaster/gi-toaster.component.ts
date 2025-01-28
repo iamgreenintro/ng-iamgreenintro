@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-type ToasterItem = {
-  type: string;
-  title: string;
-  autoClose: boolean;
-};
+import { ToasterItem } from './types';
 
 @Component({
   selector: 'gi-toaster',
