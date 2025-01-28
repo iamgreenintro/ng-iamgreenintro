@@ -6,8 +6,8 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 export class GiDraggableDirective implements OnInit {
   private offsetX: number = 0;
   private offsetY: number = 0;
-  private initialLeft: number = 0; // Track the initial `left` value
-  private initialTop: number = 0; // Track the initial `top` value
+  private initialLeft: number = 0;
+  private initialTop: number = 0;
   private mouseEventButtonIdentifier: number = 1; // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
 
   constructor(private elementRef: ElementRef) {
@@ -59,8 +59,6 @@ export class GiDraggableDirective implements OnInit {
 
   private handleMouseUp(event: MouseEvent): void {
     this.elementRef.nativeElement.style.cursor = 'grab';
-    console.log(this.offsetX);
-    console.log(event.clientX);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
   }

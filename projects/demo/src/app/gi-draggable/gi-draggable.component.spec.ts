@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GiLibbyComponent } from './gi-libby.component';
+import { GiDraggableComponent } from './gi-draggable.component';
 
-describe('GiLibbyComponent', () => {
-  let component: GiLibbyComponent;
-  let fixture: ComponentFixture<GiLibbyComponent>;
+describe('GiDraggableComponent', () => {
+  let component: GiDraggableComponent;
+  let fixture: ComponentFixture<GiDraggableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GiLibbyComponent]
+      imports: [GiDraggableComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GiLibbyComponent);
+    fixture = TestBed.createComponent(GiDraggableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

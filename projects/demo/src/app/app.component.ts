@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { GiDraggableDirective } from 'gi-libby';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, GiDraggableDirective],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'demo';
-  items: string[] = ['test1', 'test2', 'test3'];
+  toasters: any[] = [];
+
+  constructor() {}
+
+  ngOnInit(): void {}
 }
