@@ -1,9 +1,9 @@
 @for(toaster of toasterItems; track $index){
-<div class="toaster-container">
-  <div class="toaster-title">{{ toaster.title }}</div>
-  <div class="toaster-message">{{ toaster.type }}</div>
+<div class="toaster-container" [ngClass]="toaster.type">
   <div class="toaster-actions">
-    <button (click)="close(toaster)">close</button>
+    <span class="close" (click)="close(toaster)">&#10005;</span>
   </div>
+  <div class="toaster-title">{{ toaster.title }}</div>
+  <div class="toaster-message">{{ toaster.message }}</div>
 </div>
 }

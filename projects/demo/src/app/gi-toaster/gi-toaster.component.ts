@@ -18,10 +18,20 @@ export class ExampleGiToasterComponent implements OnInit {
     });
   }
 
-  onAddClick(): void {
+  onAddSuccesssClick(): void {
     this.toasterService.addToaster({
-      title: 'Toaster Title ' + Math.random().toFixed(5),
+      title: 'Success Toaster',
       type: 'success',
+      message: 'You have succcessfully created a user.',
+      autoClose: true,
+    });
+  }
+
+  onAddDangerClick(): void {
+    this.toasterService.addToaster({
+      title: 'Danger Toaster',
+      type: 'danger',
+      message: 'Danger!\nYou will lose access to your account!',
       autoClose: true,
     });
   }

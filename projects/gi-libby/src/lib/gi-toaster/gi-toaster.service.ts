@@ -10,15 +10,15 @@ export class GiToasterService {
   public toasterList: ToasterItem[] = [];
   constructor() {}
 
-  public addToaster(toaster: any): void {
+  public addToaster(toaster: ToasterItem): void {
     this.toasterList.push(toaster);
     this.$toasters.next(this.toasterList);
     if (toaster.autoClose) {
-      setTimeout(() => this._initiateAutoClose(toaster), 25000);
+      setTimeout(() => this._initiateAutoClose(toaster), 120000);
     }
   }
 
-  private _initiateAutoClose(toaster: any): void {
+  private _initiateAutoClose(toaster: ToasterItem): void {
     this.toasterList.splice(this.toasterList.indexOf(toaster), 1);
     this.$toasters.next(this.toasterList);
   }
