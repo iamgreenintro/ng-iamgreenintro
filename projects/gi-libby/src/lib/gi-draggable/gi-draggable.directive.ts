@@ -59,8 +59,6 @@ export class GiDraggableDirective implements OnInit {
 
   private handleMouseUp(event: MouseEvent): void {
     this.elementRef.nativeElement.style.cursor = 'grab';
-    console.log(this.offsetX);
-    console.log(event.clientX);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
   }

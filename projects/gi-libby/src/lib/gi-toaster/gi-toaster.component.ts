@@ -20,7 +20,6 @@ export class GiToasterComponent implements OnInit {
   ngOnInit(): void {}
 
   public close(toasterItem: ToasterItem): void {
-    console.log(this.toasterItems);
     this.toasterItems.splice(this.toasterItems.indexOf(toasterItem), 1);
     this.closeEvent.emit();
   }
