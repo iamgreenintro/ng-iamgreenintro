@@ -4,6 +4,8 @@
   [maxToastItems]="6"
   [toastDurationInMs]="4000"
   (toastListChange)="onToastsChange($event)"
+  [animate]="true"
+  animationDirection="left"
 ></gi-toast-container>
 
 <button (click)="onAddSuccesssClick()">Add Success</button>
