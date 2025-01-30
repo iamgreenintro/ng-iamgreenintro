@@ -5,20 +5,20 @@ import { ToasterItem } from './types';
 @Injectable({
   providedIn: 'root',
 })
-export class GiToasterService {
+export class GiToastService {
   public $toasters: BehaviorSubject<any[]> = new BehaviorSubject(new Array());
-  public toasterList: ToasterItem[] = [];
+  public toastList: ToasterItem[] = [];
   constructor() {}
 
-  public addToaster(toaster: ToasterItem): void {
-    this.toasterList.push(toaster);
-    this.$toasters.next(this.toasterList);
+  public addToast(toast: ToasterItem): void {
+    this.toastList.push(toast);
+    this.$toasters.next(this.toastList);
   }
 
-  public removeToaster(toaster: ToasterItem): void {
-    const toasterIndex: number = this.toasterList.indexOf(toaster);
-    this.toasterList.splice(toasterIndex, 1);
-    this.$toasters.next(this.toasterList);
+  public removeToast(toast: ToasterItem): void {
+    const toastIndex: number = this.toastList.indexOf(toast);
+    this.toastList.splice(toastIndex, 1);
+    this.$toasters.next(this.toastList);
   }
 
   // private _initiateAutoClose(toaster: ToasterItem): void {

@@ -1,0 +1,9 @@
+@for(toast of toastItems; track $index){
+<div class="toast" [ngClass]="toast.type">
+  <div class="toast-actions">
+    <span class="close" (click)="close(toast)">&#10005;</span>
+  </div>
+  <div class="toast-title">{{ toast.title }}</div>
+  <div class="toast-message">{{ toast.message }}</div>
+</div>
+}

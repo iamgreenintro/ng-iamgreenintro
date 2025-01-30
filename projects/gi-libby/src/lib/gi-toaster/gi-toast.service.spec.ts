@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GiToasterService } from './gi-toaster.service';
+import { GiToastService } from './gi-toast.service';
 
-describe('GiToasterService', () => {
-  let service: GiToasterService;
+describe('GiToastService', () => {
+  let service: GiToastService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GiToasterService);
+    service = TestBed.inject(GiToastService);
   });
 
   it('should be created', () => {
