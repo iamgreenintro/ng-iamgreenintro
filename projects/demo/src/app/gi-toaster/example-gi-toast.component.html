@@ -3,6 +3,7 @@
   (close)="doSomethingOnClose()"
   [maxToastItems]="6"
   [toastDurationInMs]="4000"
+  (toastListChange)="onToastersChange($event)"
 ></gi-toast-container>
 
 <button (click)="onAddSuccesssClick()">Add Success</button>

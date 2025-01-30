@@ -47,15 +47,19 @@ export class GiToastContainerComponent implements OnInit {
       }
     }
 
-    this.toasteListChangeEvent.emit();
+    this.toasteListChangeEvent.emit('changed!');
   }
 
   private _closeFirstIfExceededMaxAmount(toastList: ToasterItem[]): void {
     if (toastList.length > this.maxToastItems) {
-      if (toastList[0].closeRef !== undefined) {
-        window.clearTimeout(toastList[0].closeRef);
-        this.close(toastList[0]);
-      }
+      this._removeTimeoutReferenceIfSet(toastList[0]);
+      this.close(toastList[0]);
+    }
+  }
+
+  private _removeTimeoutReferenceIfSet(toast: ToasterItem): void {
+    if (toast.closeRef !== undefined) {
+      window.clearTimeout(toast.closeRef);
     }
   }
 

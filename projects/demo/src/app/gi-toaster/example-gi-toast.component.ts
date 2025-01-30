@@ -54,11 +54,15 @@ export class ExampleGiToastComponent implements OnInit {
       title: 'Success Toaster',
       type: 'info',
       message: 'The total amount of your balance.',
-      autoClose: true,
+      autoClose: false,
     });
   }
 
   doSomethingOnClose(): void {
     console.log('something');
+  }
+
+  onToastersChange(val: any): void {
+    console.log(val);
   }
 }
