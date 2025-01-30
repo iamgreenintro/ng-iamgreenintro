@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GiToasterComponent } from './gi-toaster.component';
+import { GiToasterContainerComponent } from './gi-toaster-container.component';
 
 describe('GiToasterComponent', () => {
-  let component: GiToasterComponent;
-  let fixture: ComponentFixture<GiToasterComponent>;
+  let component: GiToasterContainerComponent;
+  let fixture: ComponentFixture<GiToasterContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GiToasterComponent]
-    })
-    .compileComponents();
+      imports: [GiToasterContainerComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(GiToasterComponent);
+    fixture = TestBed.createComponent(GiToasterContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

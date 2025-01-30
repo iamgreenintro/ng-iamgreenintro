@@ -1,5 +1,5 @@
 @for(toaster of toasterItems; track $index){
-<div class="toaster-container" [ngClass]="toaster.type">
+<div class="toaster" [ngClass]="toaster.type">
   <div class="toaster-actions">
     <span class="close" (click)="close(toaster)">&#10005;</span>
   </div>

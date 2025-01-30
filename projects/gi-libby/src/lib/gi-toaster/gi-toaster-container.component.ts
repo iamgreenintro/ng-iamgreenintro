@@ -3,12 +3,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToasterItem } from './types';
 
 @Component({
-  selector: 'gi-toaster',
+  selector: 'gi-toaster-container',
   imports: [CommonModule],
-  templateUrl: './gi-toaster.component.html',
-  styleUrl: './gi-toaster.component.scss',
+  templateUrl: './gi-toaster-container.component.html',
+  styleUrl: './gi-toaster-container.component.scss',
 })
-export class GiToasterComponent implements OnInit {
+export class GiToasterContainerComponent implements OnInit {
   // Input properties (and if applicable their (initial) default values):
   @Input() toasterItems: ToasterItem[] = [];
 

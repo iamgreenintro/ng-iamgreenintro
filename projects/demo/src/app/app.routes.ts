@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ExampleGiDraggableComponent } from './gi-draggable/gi-draggable.component';
-import { ExampleGiToasterComponent } from './gi-toaster/gi-toaster.component';
+import { ExampleGiToasterComponent } from './gi-toaster/example-gi-toaster.component';
 
 export const routes: Routes = [
   { path: 'gi-draggable', component: ExampleGiDraggableComponent },
