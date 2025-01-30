@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  GiToastContainerComponent,
-  GiToastService,
-  ToasterItem,
-} from 'gi-libby';
+import { GiToastContainerComponent, GiToastService, ToastItem } from 'gi-libby';
 
 @Component({
   selector: 'example-gi-toast',
@@ -12,19 +8,19 @@ import {
   styleUrl: './example-gi-toast.component.scss',
 })
 export class ExampleGiToastComponent implements OnInit {
-  public toasters: ToasterItem[] = [];
+  public toasts: ToastItem[] = [];
 
   constructor(private toastService: GiToastService) {}
 
   ngOnInit(): void {
-    this.toastService.$toasters.subscribe((result) => {
-      this.toasters = result;
+    this.toastService.$toasts.subscribe((result) => {
+      this.toasts = result;
     });
   }
 
   onAddSuccesssClick(): void {
     this.toastService.addToast({
-      title: 'Success Toaster',
+      title: 'Success Toast',
       type: 'success',
       message: 'You have succcessfully created a user.',
       autoClose: true,
@@ -33,7 +29,7 @@ export class ExampleGiToastComponent implements OnInit {
 
   onAddDangerClick(): void {
     this.toastService.addToast({
-      title: 'Danger Toaster',
+      title: 'Danger Toast',
       type: 'danger',
       message: 'Danger!\nYou will lose access to your account!',
       autoClose: true,
@@ -42,7 +38,7 @@ export class ExampleGiToastComponent implements OnInit {
 
   onAddWarnClick(): void {
     this.toastService.addToast({
-      title: 'Success Toaster',
+      title: 'Success Toast',
       type: 'warn',
       message: 'Something went wrong, please try again.',
       autoClose: true,
@@ -51,7 +47,7 @@ export class ExampleGiToastComponent implements OnInit {
 
   onAddInfoClick(): void {
     this.toastService.addToast({
-      title: 'Success Toaster',
+      title: 'Success Toast',
       type: 'info',
       message: 'The total amount of your balance.',
       autoClose: false,
@@ -62,7 +58,7 @@ export class ExampleGiToastComponent implements OnInit {
     console.log('something');
   }
 
-  onToastersChange(val: any): void {
+  onToastsChange(val: any): void {
     console.log(val);
   }
 }

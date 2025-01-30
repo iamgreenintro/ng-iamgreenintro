@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ToasterItem } from './types';
+import { ToastItem } from './types';
 import { GiToastService } from './gi-toast.service';
 
 @Component({
@@ -11,23 +11,23 @@ import { GiToastService } from './gi-toast.service';
 })
 export class GiToastContainerComponent implements OnInit {
   // Input properties (and if applicable their (initial) default values):
-  @Input() toastItems: ToasterItem[] = [];
+  @Input() toastItems: ToastItem[] = [];
   @Input() maxToastItems: number = 4;
   @Input() toastDurationInMs: number = 5000;
 
   // Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();
-  @Output('toastListChange') toasteListChangeEvent = new EventEmitter();
+  @Output('toastListChange') toastListChangeEvent = new EventEmitter();
 
   constructor(private toastService: GiToastService) {}
 
   ngOnInit(): void {
-    this.toastService.$toasters.subscribe((toasters) => {
-      this._onToasterListChange(toasters);
+    this.toastService.$toasts.subscribe((toasts) => {
+      this._onToastListChange(toasts);
     });
   }
 
-  public close(toastItem: ToasterItem): void {
+  public close(toastItem: ToastItem): void {
     if (toastItem.closeRef !== undefined) {
       window.clearTimeout(toastItem.closeRef);
     }
@@ -35,35 +35,35 @@ export class GiToastContainerComponent implements OnInit {
     this.closeEvent.emit();
   }
 
-  private _onToasterListChange(toastList: ToasterItem[]): void {
+  private _onToastListChange(toastList: ToastItem[]): void {
     this._closeFirstIfExceededMaxAmount(toastList);
 
-    const toaster: ToasterItem = toastList[toastList.length - 1];
-    if (this._hasAutoClose(toaster)) {
-      if (toaster.closeRef === undefined) {
-        toaster.closeRef = window.setTimeout(() => {
-          this.close(toaster);
+    const toast: ToastItem = toastList[toastList.length - 1];
+    if (this._hasAutoClose(toast)) {
+      if (toast.closeRef === undefined) {
+        toast.closeRef = window.setTimeout(() => {
+          this.close(toast);
         }, this.toastDurationInMs);
       }
     }
 
-    this.toasteListChangeEvent.emit('changed!');
+    this.toastListChangeEvent.emit('changed!');
   }
 
-  private _closeFirstIfExceededMaxAmount(toastList: ToasterItem[]): void {
+  private _closeFirstIfExceededMaxAmount(toastList: ToastItem[]): void {
     if (toastList.length > this.maxToastItems) {
       this._removeTimeoutReferenceIfSet(toastList[0]);
       this.close(toastList[0]);
     }
   }
 
-  private _removeTimeoutReferenceIfSet(toast: ToasterItem): void {
+  private _removeTimeoutReferenceIfSet(toast: ToastItem): void {
     if (toast.closeRef !== undefined) {
       window.clearTimeout(toast.closeRef);
     }
   }
 
-  private _hasAutoClose(toaster: ToasterItem): boolean {
-    return toaster && toaster.autoClose ? true : false;
+  private _hasAutoClose(toast: ToastItem): boolean {
+    return toast && toast.autoClose ? true : false;
   }
 }

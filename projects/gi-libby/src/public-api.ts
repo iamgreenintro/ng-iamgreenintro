@@ -3,4 +3,4 @@
  */
 
 export * from './lib/gi-draggable/gi-draggable.directive';
-export * from './lib/gi-toaster';
+export * from './lib/gi-toast';

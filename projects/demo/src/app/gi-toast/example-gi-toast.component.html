@@ -1,9 +1,9 @@
 <gi-toast-container
-  [toastItems]="toasters"
+  [toastItems]="toasts"
   (close)="doSomethingOnClose()"
   [maxToastItems]="6"
   [toastDurationInMs]="4000"
-  (toastListChange)="onToastersChange($event)"
+  (toastListChange)="onToastsChange($event)"
 ></gi-toast-container>
 
 <button (click)="onAddSuccesssClick()">Add Success</button>

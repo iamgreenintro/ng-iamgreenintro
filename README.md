@@ -11,7 +11,7 @@ An expanding Angular workspace intented to develop libraries that are useful and
 ## Features
 
 - [x] Draggable components - a directive to make Angular components draggable.
-- [x] Notification component & service - a toaster component and service to manage customizable notifications out of the box.
+- [x] Notification component & service - a toast component and service to manage customizable notifications out of the box.
 - [x] Angular demo application with above mentioned features.
 
 ## Development
