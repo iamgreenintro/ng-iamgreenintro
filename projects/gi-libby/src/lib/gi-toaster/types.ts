@@ -3,4 +3,5 @@ export type ToasterItem = {
   message: string;
   title: string;
   autoClose: boolean;
+  closeRef?: number | undefined;
 };

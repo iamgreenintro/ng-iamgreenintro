@@ -13,6 +13,7 @@ export class GiToasterContainerComponent implements OnInit {
   // Input properties (and if applicable their (initial) default values):
   @Input() toasterItems: ToasterItem[] = [];
   @Input() maxToasterItems: number = 4;
+  @Input() toasterDurationInMs: number = 5000;
 
   // Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();
@@ -22,17 +23,35 @@ export class GiToasterContainerComponent implements OnInit {
   ngOnInit(): void {
     this.toasterService.$toasters.subscribe((toasters) => {
       this.closeFirstIfExceededMaxAmount(toasters);
+      const toaster: ToasterItem = toasters[toasters.length - 1];
+      if (this.hasAutoClose(toaster)) {
+        if (toaster.closeRef === undefined) {
+          toaster.closeRef = window.setTimeout(() => {
+            this.close(toaster);
+          }, this.toasterDurationInMs);
+        }
+      }
     });
   }
 
   public close(toasterItem: ToasterItem): void {
+    if (toasterItem.closeRef !== undefined) {
+      window.clearTimeout(toasterItem.closeRef);
+    }
     this.toasterService.removeToaster(toasterItem);
     this.closeEvent.emit();
   }
 
   private closeFirstIfExceededMaxAmount(toasters: ToasterItem[]): void {
     if (toasters.length > this.maxToasterItems) {
-      this.close(toasters[0]);
+      if (toasters[0].closeRef !== undefined) {
+        window.clearTimeout(toasters[0].closeRef);
+        this.close(toasters[0]);
+      }
     }
+  }
+
+  private hasAutoClose(toaster: ToasterItem): boolean {
+    return toaster && toaster.autoClose ? true : false;
   }
 }
