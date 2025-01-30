@@ -1,4 +1,8 @@
-<gi-toaster-container [toasterItems]="toasters"></gi-toaster-container>
+<gi-toaster-container
+  [toasterItems]="toasters"
+  (close)="doSomethingOnClose()"
+  [maxToasterItems]="6"
+></gi-toaster-container>
 
 <button (click)="onAddSuccesssClick()">Add Success</button>
 <button (click)="onAddDangerClick()">Add Danger</button>

@@ -12,14 +12,17 @@ export class GiToasterService {
 
   public addToaster(toaster: ToasterItem): void {
     this.toasterList.push(toaster);
-    this.$toasters.next(this.toasterList);
-    if (toaster.autoClose) {
-      setTimeout(() => this._initiateAutoClose(toaster), 120000);
-    }
+    this.$toasters.next([...this.toasterList]);
   }
 
-  private _initiateAutoClose(toaster: ToasterItem): void {
-    this.toasterList.splice(this.toasterList.indexOf(toaster), 1);
-    this.$toasters.next(this.toasterList);
+  public removeToaster(toaster: ToasterItem): void {
+    const toasterIndex: number = this.toasterList.indexOf(toaster);
+    this.toasterList.splice(toasterIndex, 1);
+    this.$toasters.next([...this.toasterList]);
   }
+
+  // private _initiateAutoClose(toaster: ToasterItem): void {
+  //   this.toasterList.splice(this.toasterList.indexOf(toaster), 1);
+  //   this.$toasters.next(this.toasterList);
+  // }
 }

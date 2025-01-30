@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToasterItem } from './types';
+import { GiToasterService } from './gi-toaster.service';
 
 @Component({
   selector: 'gi-toaster-container',
@@ -11,16 +12,27 @@ import { ToasterItem } from './types';
 export class GiToasterContainerComponent implements OnInit {
   // Input properties (and if applicable their (initial) default values):
   @Input() toasterItems: ToasterItem[] = [];
+  @Input() maxToasterItems: number = 4;
 
   // Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();
 
-  constructor() {}
+  constructor(private toasterService: GiToasterService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.toasterService.$toasters.subscribe((toasters) => {
+      this.closeFirstIfExceededMaxAmount(toasters);
+    });
+  }
 
   public close(toasterItem: ToasterItem): void {
-    this.toasterItems.splice(this.toasterItems.indexOf(toasterItem), 1);
+    this.toasterService.removeToaster(toasterItem);
     this.closeEvent.emit();
+  }
+
+  private closeFirstIfExceededMaxAmount(toasters: ToasterItem[]): void {
+    if (toasters.length > this.maxToasterItems) {
+      this.close(toasters[0]);
+    }
   }
 }

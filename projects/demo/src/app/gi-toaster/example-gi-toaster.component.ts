@@ -57,4 +57,8 @@ export class ExampleGiToasterComponent implements OnInit {
       autoClose: true,
     });
   }
+
+  doSomethingOnClose(): void {
+    console.log('something');
+  }
 }
