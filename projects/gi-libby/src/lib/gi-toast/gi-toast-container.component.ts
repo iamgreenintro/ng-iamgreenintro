@@ -23,7 +23,8 @@ export class GiToastContainerComponent implements OnInit {
   @Input({ transform: numberAttribute }) maxToastItems: number = 4;
   @Input({ transform: numberAttribute }) toastDurationInMs: number = 5000;
   @Input({ transform: booleanAttribute }) animate: boolean = false;
-  @Input() animationDirection: 'right' | 'left' | 'top' | 'bottom' = 'left';
+  @Input() animateAddDirection: 'right' | 'left' | 'top' | 'bottom' = 'right';
+  @Input() animateCloseDirection: 'right' | 'left' | 'top' | 'bottom' = 'right';
 
   // ## Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();
@@ -39,14 +40,14 @@ export class GiToastContainerComponent implements OnInit {
     });
   }
 
-  public close(toastItem: ToastItem): void {
-    this._removeTimeoutReferenceIfSet(toastItem);
-    this.toastService.removeToast(toastItem);
+  public close(toast: ToastItem): void {
+    this._removeTimeoutReferenceIfSet(toast);
+    this.toastService.removeToast(toast);
+    this._animateToast(toast, this.animateCloseDirection);
     this.closeEvent.emit();
   }
 
   private _onToastListChange(newToastList: ToastItem[]): void {
-    // Check if toast list has grown
     if (newToastList.length > this._toastCount) {
       this._onToastAdd(newToastList);
       this.toastListChangeEvent.emit('added!');
@@ -61,11 +62,17 @@ export class GiToastContainerComponent implements OnInit {
     this._closeFirstIfExceededMaxAmount(toastList);
 
     const toast: ToastItem = toastList[toastList.length - 1];
+    this._animateToast(toast, this.animateAddDirection);
+
     if (this._hasAutoClose(toast)) {
       toast.closeRef = window.setTimeout(() => {
         this.close(toast);
       }, this.toastDurationInMs);
     }
+  }
+
+  private _animateToast(toast: ToastItem, direction: string): void {
+    let element: HTMLElement;
   }
 
   private _closeFirstIfExceededMaxAmount(toastList: ToastItem[]): void {
