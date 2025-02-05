@@ -18,14 +18,14 @@ import { GiToastService } from './gi-toast.service';
   styleUrl: './gi-toast-container.component.scss',
 })
 export class GiToastContainerComponent implements OnInit {
-  // Input properties (and if applicable their (initial) default values):
+  // ## Inputs:
   @Input() toastItems: ToastItem[] = [];
   @Input({ transform: numberAttribute }) maxToastItems: number = 4;
   @Input({ transform: numberAttribute }) toastDurationInMs: number = 5000;
   @Input({ transform: booleanAttribute }) animate: boolean = false;
   @Input() animationDirection: 'right' | 'left' | 'top' | 'bottom' = 'left';
 
-  // Output EventEmitters:
+  // ## Output EventEmitters:
   @Output('close') closeEvent = new EventEmitter();
   @Output('toastListChange') toastListChangeEvent = new EventEmitter();
 
@@ -45,17 +45,16 @@ export class GiToastContainerComponent implements OnInit {
     this.closeEvent.emit();
   }
 
-  private _onToastListChange(toastList: ToastItem[]): void {
-    // Check if added or removed by comparing previous length.
-    if (this._toastCount < toastList.length) {
-      this._onToastAdd(toastList);
+  private _onToastListChange(newToastList: ToastItem[]): void {
+    // Check if toast list has grown
+    if (newToastList.length > this._toastCount) {
+      this._onToastAdd(newToastList);
       this.toastListChangeEvent.emit('added!');
     } else {
       this.toastListChangeEvent.emit('closed!');
     }
 
-    // Finally - update the previous toast count to the current one.
-    this._toastCount = toastList.length;
+    this._toastCount = newToastList.length;
   }
 
   private _onToastAdd(toastList: ToastItem[]): void {
@@ -63,11 +62,9 @@ export class GiToastContainerComponent implements OnInit {
 
     const toast: ToastItem = toastList[toastList.length - 1];
     if (this._hasAutoClose(toast)) {
-      if (toast.closeRef === undefined) {
-        toast.closeRef = window.setTimeout(() => {
-          this.close(toast);
-        }, this.toastDurationInMs);
-      }
+      toast.closeRef = window.setTimeout(() => {
+        this.close(toast);
+      }, this.toastDurationInMs);
     }
   }
 
