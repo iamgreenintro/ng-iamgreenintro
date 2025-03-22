@@ -34,7 +34,7 @@ export class InMemoryCachingService {
     observableReturnFn: () => Observable<T>,
     duration: number = 10,
     forceRefresh = false
-  ): Observable<T> {
+  ): Observable<CachedDataType<T>> {
     // console.log(this.cache);
     // If there is no entry existing in the cache OR the request was explicitly told to be made:
     const progressedTime = moment().diff(
@@ -65,7 +65,7 @@ export class InMemoryCachingService {
     return this.cache
       .get(symbol)!
       .asObservable()
-      .pipe(switchMap((data) => of(data?.data)));
+      .pipe(switchMap((data) => of(data)));
   }
 
   private clearCache(symbol: Symbol): void {
