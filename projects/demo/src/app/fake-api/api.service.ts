@@ -18,7 +18,7 @@ export class ApiService {
     return this.cachingService.getData(
       ApiService.something,
       () => of(this.somethingText + `${this.incrementer}`),
-      25,
+      42,
       false
     );
   }
@@ -33,8 +33,8 @@ export class ApiService {
     return this.cachingService.getData(
       ApiService.somethingElse,
       () => of(['1', this.incrementer, { key: 'value' }]),
-      120,
-      true
+      10,
+      false
     );
   }
 }

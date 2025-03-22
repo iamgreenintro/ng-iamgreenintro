@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay, tap } from 'rxjs';
 import moment from 'moment';
 
 export interface CachedDataType<T> {
@@ -37,11 +37,11 @@ export class InMemoryCachingService {
     forceRefresh = false
   ): Observable<CachedDataType<T>> {
     // console.log(this.cache);
-    // If there is no entry existing in the cache OR the request was explicitly told to be made:
     const progressedTime = moment().diff(
       this.cache.get(symbol)?.getValue().lastCachedAt,
       'seconds'
     );
+    // Symbol does not exist OR we want to force a callback execution OR cache duration has expired:
     if (!this.cache.has(symbol) || forceRefresh || progressedTime > duration) {
       this.cache.set(
         symbol,
@@ -50,12 +50,13 @@ export class InMemoryCachingService {
           data: null,
         })
       );
+      // Call the logic from the callback fn that does stuff and returns an Observable.
       observableReturnFn()
         .pipe(
           tap((data) => {
             const cachedData: CachedDataType<T> = {
               lastCachedAt: moment(),
-              data,
+              data: data,
             };
             this.cache.get(symbol)!.next(cachedData);
           }),
@@ -63,10 +64,8 @@ export class InMemoryCachingService {
         )
         .subscribe();
     }
-    return this.cache
-      .get(symbol)!
-      .asObservable()
-      .pipe(switchMap((data) => of(data)));
+    // Get the cached value and return it as an Observable (Observable<CachedDataType<T>>)
+    return this.cache.get(symbol)!.asObservable();
   }
 
   private clearCache(symbol: Symbol): void {
