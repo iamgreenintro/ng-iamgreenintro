@@ -11,68 +11,64 @@ import moment from 'moment';
 
 export interface CachedDataType<T> {
   lastCachedAt: moment.Moment | undefined;
-  data: T;
+  data: T | null;
 }
+
+interface CacheMap extends Map<Symbol, BehaviorSubject<CachedDataType<any>>> {}
 
 @Injectable({ providedIn: 'root' })
 export class InMemoryCachingService {
-  // Our Map key will be the actual function itself.
-  private cache: Map<Symbol, BehaviorSubject<CachedDataType<any> | null>> = new Map<
-    Symbol,
-    BehaviorSubject<CachedDataType<any> | null>
-  >(null);
+  private cache: CacheMap = new Map<Symbol, BehaviorSubject<CachedDataType<any>>>();
 
   constructor() {}
 
   /**
    * Method that gets invoked by the service method calling the API for data.
-   * @param key
-   * @param fetchFn
-   * @param forceRefresh
+   * @param symbol should be a unique symbol passed in the context this service is injected to.
+   * @param observableReturnFn callback function that should return an Observable of type CachedDataType<T>.
+   * @param forceRefresh forcefully update subscribers.
    * @returns
    */
   public getData<T>(
-    key: Symbol,
-    fetchFn: () => Observable<T>,
+    symbol: Symbol,
+    observableReturnFn: () => Observable<T>,
+    duration: number = 10,
     forceRefresh = false
   ): Observable<T> {
+    // console.log(this.cache);
     // If there is no entry existing in the cache OR the request was explicitly told to be made:
-    if (!this.cache.has(key) || forceRefresh) {
-      this.cache.set(key, new BehaviorSubject<CachedDataType<T> | null>(null));
-      fetchFn()
+    const progressedTime = moment().diff(
+      this.cache.get(symbol)?.getValue().lastCachedAt,
+      'seconds'
+    );
+    if (!this.cache.has(symbol) || forceRefresh || progressedTime > duration) {
+      this.cache.set(
+        symbol,
+        new BehaviorSubject<CachedDataType<T>>({
+          lastCachedAt: undefined,
+          data: null,
+        })
+      );
+      observableReturnFn()
         .pipe(
           tap((data) => {
             const cachedData: CachedDataType<T> = {
               lastCachedAt: moment(),
               data,
             };
-            this.cache.get(key)!.next(cachedData);
+            this.cache.get(symbol)!.next(cachedData);
           }),
           shareReplay(1)
         )
         .subscribe();
     }
     return this.cache
-      .get(key)!
+      .get(symbol)!
       .asObservable()
-      .pipe(
-        switchMap((data) =>
-          data
-            ? of(data.data)
-            : fetchFn().pipe(
-                tap((res) => {
-                  const cachedData: CachedDataType<T> = {
-                    lastCachedAt: moment(),
-                    data: res,
-                  };
-                  this.cache.get(key)!.next(cachedData);
-                })
-              )
-        )
-      );
+      .pipe(switchMap((data) => of(data?.data)));
   }
 
-  private clearCache(key: Symbol): void {
-    this.cache.delete(key);
+  private clearCache(symbol: Symbol): void {
+    this.cache.delete(symbol);
   }
 }
