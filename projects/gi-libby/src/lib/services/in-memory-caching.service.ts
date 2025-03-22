@@ -26,13 +26,14 @@ export class InMemoryCachingService {
    * Method that gets invoked by the service method calling the API for data.
    * @param symbol should be a unique symbol passed in the context this service is injected to.
    * @param observableReturnFn callback function that should return an Observable of type CachedDataType<T>.
-   * @param forceRefresh forcefully update subscribers.
+   * @param duration the duration in seconds that the cached data is valid for, defaults to 3600 (1hr).
+   * @param forceRefresh forcefully update; defaults to false.
    * @returns
    */
   public getData<T>(
     symbol: Symbol,
     observableReturnFn: () => Observable<T>,
-    duration: number = 10,
+    duration: number = 3600,
     forceRefresh = false
   ): Observable<CachedDataType<T>> {
     // console.log(this.cache);
