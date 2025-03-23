@@ -15,7 +15,7 @@ export class ApiService {
   constructor(private cachingService: InMemoryCachingService) {}
 
   async getSomething(forceRefresh = false) {
-    return this.cachingService.getData(
+    return this.cachingService.returnFromCacheMapAsObservable(
       ApiService.something,
       () => of(this.somethingText + `${this.incrementer}`),
       30,
@@ -28,7 +28,7 @@ export class ApiService {
   }
 
   async getSomethingElse(forceRefresh = false) {
-    return this.cachingService.getData(
+    return this.cachingService.returnFromCacheMapAsObservable(
       ApiService.somethingElse,
       () => of({ arr: [{ test: `test #${this.incrementer}` }] }),
       60,

@@ -1,4 +1,9 @@
 /**
+ * @description
+ * An in-memory caching service that acts as a wrapper for data retrieval via methods that return Observables.
+ * For example when using Angular's HttpClient, the requests can return an Observable.
+ * To limit (frequent) requests we can cache the fetched data in a custom CacheMap type.
+ *
  * An in-memory caching service to be extended to other services that fire requests that return data.
  * It's intent is to be able to limit data retrieval when possible such as navigating through a SPA.
  * Different pages might do the same request to render the data; instead we can just retrieve
@@ -6,12 +11,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, filter, Observable, shareReplay, tap } from 'rxjs';
 import moment from 'moment';
 
 export interface CachedDataType<T> {
   lastCachedAt: moment.Moment | undefined;
-  data: T | null;
+  data: T | undefined;
 }
 
 interface CacheMap extends Map<Symbol, BehaviorSubject<CachedDataType<any>>> {}
@@ -23,34 +28,36 @@ export class InMemoryCachingService {
   constructor() {}
 
   /**
-   * Method that gets invoked by the service method calling the API for data.
-   * @param symbol should be a unique symbol passed in the context this service is injected to.
-   * @param observableReturnFn callback function that returns an Observable we subscribe to.
-   * @param duration the duration in seconds that the cached data is valid for, defaults to 3600 (1hr).
-   * @param forceRefresh forcefully update; defaults to false.
+   * Lookup and return from CacheMap
+   * @param symbol unique symbol passed in the context the InMemoryCachingService is injected to.
+   * @param observableReturnFn callback function that returns an Observable.
+   * @param duration duration in seconds before updating.
+   * @param forceRefresh forcefully update the value in cache.
    * @returns
    */
-  public getData<T>(
+  public returnFromCacheMapAsObservable<T>(
     symbol: Symbol,
     observableReturnFn: () => Observable<T>,
     duration: number = 3600,
     forceRefresh = false
   ): Observable<CachedDataType<T>> {
-    // console.log(this.cache);
+    // Get the progressed time in seconds:
     const progressedTime = moment().diff(
       this.cache.get(symbol)?.getValue().lastCachedAt,
       'seconds'
     );
-    // Symbol does not exist OR we want to force a callback execution OR cache duration has expired:
+
+    // Create or update an entry in the CacheMap:
     if (!this.cache.has(symbol) || forceRefresh || progressedTime > duration) {
       this.cache.set(
         symbol,
         new BehaviorSubject<CachedDataType<T>>({
           lastCachedAt: undefined,
-          data: null,
+          data: undefined,
         })
       );
-      // Execute the callback function and subscribe to it's changes.
+
+      // Execute the callback function update the CacheMap BehaviourSubject with the callback result:
       observableReturnFn()
         .pipe(
           tap((data) => {
@@ -67,7 +74,13 @@ export class InMemoryCachingService {
     }
 
     // Get the cached value (the BehaviourSubject) and return it as an Observable (Observable<CachedDataType<T>>)
-    return this.cache.get(symbol)!.asObservable();
+    return this.cache
+      .get(symbol)!
+      .asObservable()
+      .pipe(
+        // Filter out initial values
+        filter((cachedData) => typeof cachedData.data !== 'undefined')
+      );
   }
 
   private clearCache(symbol: Symbol): void {
