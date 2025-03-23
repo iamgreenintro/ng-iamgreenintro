@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { InMemoryCachingService } from 'gi-libby';
 @Injectable({
   providedIn: 'root',
@@ -14,27 +14,25 @@ export class ApiService {
 
   constructor(private cachingService: InMemoryCachingService) {}
 
-  async getSomething() {
+  async getSomething(forceRefresh = false) {
     return this.cachingService.getData(
       ApiService.something,
       () => of(this.somethingText + `${this.incrementer}`),
-      42,
-      false
+      30,
+      forceRefresh
     );
   }
 
-  async setSomething() {
-    this.somethingText = 'something';
+  setSomething() {
     this.incrementer += 1;
-    return this.somethingText + `${this.incrementer}`;
   }
 
-  async getSomethingElse() {
+  async getSomethingElse(forceRefresh = false) {
     return this.cachingService.getData(
       ApiService.somethingElse,
-      () => of(['1', this.incrementer, { key: 'value' }]),
-      10,
-      false
+      () => of({ arr: [{ test: `test #${this.incrementer}` }] }),
+      60,
+      forceRefresh
     );
   }
 }

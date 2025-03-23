@@ -1,0 +1,17 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  width: 300px;
+  float: left;
+  padding-right: 25px;
+  margin-right: 25px;
+  border-right: 2px #000 solid;
+
+  button {
+    display: block;
+    width: 100%;
+  }
+}

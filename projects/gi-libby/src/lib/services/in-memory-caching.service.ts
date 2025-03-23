@@ -25,7 +25,7 @@ export class InMemoryCachingService {
   /**
    * Method that gets invoked by the service method calling the API for data.
    * @param symbol should be a unique symbol passed in the context this service is injected to.
-   * @param observableReturnFn callback function that should return an Observable of type CachedDataType<T>.
+   * @param observableReturnFn callback function that returns an Observable we subscribe to.
    * @param duration the duration in seconds that the cached data is valid for, defaults to 3600 (1hr).
    * @param forceRefresh forcefully update; defaults to false.
    * @returns
@@ -50,10 +50,11 @@ export class InMemoryCachingService {
           data: null,
         })
       );
-      // Call the logic from the callback fn that does stuff and returns an Observable.
+      // Execute the callback function and subscribe to it's changes.
       observableReturnFn()
         .pipe(
           tap((data) => {
+            // Inside the CacheMap we update the BehaviourSubject's value:
             const cachedData: CachedDataType<T> = {
               lastCachedAt: moment(),
               data: data,
@@ -64,7 +65,8 @@ export class InMemoryCachingService {
         )
         .subscribe();
     }
-    // Get the cached value and return it as an Observable (Observable<CachedDataType<T>>)
+
+    // Get the cached value (the BehaviourSubject) and return it as an Observable (Observable<CachedDataType<T>>)
     return this.cache.get(symbol)!.asObservable();
   }
 
