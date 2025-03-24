@@ -3,11 +3,6 @@
  * An in-memory caching service that acts as a wrapper for data retrieval via methods that return Observables.
  * For example when using Angular's HttpClient, the requests can return an Observable.
  * To limit (frequent) requests we can cache the fetched data in a custom CacheMap type.
- *
- * An in-memory caching service to be extended to other services that fire requests that return data.
- * It's intent is to be able to limit data retrieval when possible such as navigating through a SPA.
- * Different pages might do the same request to render the data; instead we can just retrieve
- * the previously fetched data if it's "new" enough.
  */
 
 import { Injectable } from '@angular/core';
@@ -66,7 +61,7 @@ export class InMemoryCachingService {
               lastCachedAt: moment(),
               data: data,
             };
-            this.cache.get(symbol)!.next(cachedData);
+            this.cache.get(symbol)?.next(cachedData);
           }),
           shareReplay(1)
         )
