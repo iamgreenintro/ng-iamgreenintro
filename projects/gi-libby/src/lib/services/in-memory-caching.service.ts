@@ -55,13 +55,19 @@ export class InMemoryCachingService {
       // Execute the callback function update the CacheMap BehaviourSubject with the callback result:
       observableReturnFn()
         .pipe(
-          tap((data) => {
-            // Inside the CacheMap we update the BehaviourSubject's value:
-            const cachedData: CachedDataType<T> = {
-              lastCachedAt: moment(),
-              data: data,
-            };
-            this.cache.get(symbol)?.next(cachedData);
+          tap({
+            next: (res) => {
+              // Inside the CacheMap we update the BehaviourSubject's value:
+              const cachedData: CachedDataType<T> = {
+                lastCachedAt: moment(),
+                data: res,
+              };
+              this.cache.get(symbol)?.next(cachedData);
+            },
+            error: (err) => {
+              this.cache.get(symbol)?.error(err);
+              this.clearCache(symbol);
+            },
           }),
           shareReplay(1)
         )

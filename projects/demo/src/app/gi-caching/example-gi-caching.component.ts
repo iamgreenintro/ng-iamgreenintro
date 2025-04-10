@@ -28,8 +28,13 @@ export class ExampleGiCachingComponent {
           return data;
         })
       )
-      .subscribe((res) => {
-        console.log(res);
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
   }
 
@@ -37,10 +42,15 @@ export class ExampleGiCachingComponent {
     this.apiService.setSomething();
   }
 
-  async getIncrementCountValue(): Promise<void> {
-    const something = await this.fakeServiceOne.getIncrementCountValue();
-    something.subscribe((response) => {
-      console.log(response);
+  async getIncrementCountValue(force: boolean = false): Promise<void> {
+    const something = await this.fakeServiceOne.getIncrementCountValue(force);
+    something.subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
@@ -53,8 +63,13 @@ export class ExampleGiCachingComponent {
           return data;
         })
       )
-      .subscribe((res) => {
-        console.log(res);
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
   }
 
